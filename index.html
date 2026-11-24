@@ -258,6 +258,7 @@
     },
     {
       title: "培養心理強大的孩子",
+      pinned: true,   // 置頂：永遠排在同分類第一個
       desc: "130 項教養提醒卡片，整理自《Raising Mentally Strong Kids》。",
       icon: "🌱",
       cat: "讀書心得",
@@ -289,7 +290,7 @@
     grid.innerHTML = "";
     const list = projects
       .filter(p => current === "全部" || p.cat === current)
-      .sort((a, b) => cats.indexOf(a.cat) - cats.indexOf(b.cat));
+      .sort((a, b) => (cats.indexOf(a.cat) - cats.indexOf(b.cat)) || ((b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)));
     if (!list.length) {
       grid.innerHTML = '<div class="empty">這個分類的作品準備中 ✨</div>';
       return;
