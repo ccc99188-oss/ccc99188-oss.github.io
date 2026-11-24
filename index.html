@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>林俊言的作品集</title>
+<meta name="description" content="中西醫師、譯者，用 AI 做親子教育與醫療衛教的網頁工具。">
+<meta name="theme-color" content="#2f6f62">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="作品集">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="林俊言的作品集">
+<meta property="og:description" content="中西醫師、譯者，用 AI 做親子教育與醫療衛教的網頁工具。">
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --card: #ffffff;
+    --ink: #1f2a27;
+    --muted: #5d6b66;
+    --line: #e4ded4;
+    --accent: #2f6f62;
+    --accent-soft: #e3efeb;
+    --warm: #b5652b;
+    --warm-soft: #f7e9dd;
+    --plum: #6b5aa6;
+    --plum-soft: #ece8f6;
+    --blue: #2f6295;
+    --blue-soft: #e2ecf6;
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151a19;
+      --card: #1f2624;
+      --ink: #eef2f0;
+      --muted: #a3b0ab;
+      --line: #2e3734;
+      --accent: #7cc4b2;
+      --accent-soft: #23332f;
+      --warm: #e8a774;
+      --warm-soft: #3a2b20;
+      --plum: #b9a8ec;
+      --plum-soft: #2d2840;
+      --blue: #8fbbe8;
+      --blue-soft: #1f2c3a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.6;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 28px 18px 48px; }
+
+  /* 名片 */
+  .profile {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .avatar {
+    width: 76px; height: 76px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    display: grid; place-items: center;
+    font-size: 32px; font-weight: 700;
+    overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .profile h1 { margin: 0; font-size: 1.45rem; line-height: 1.3; }
+  .role { margin: 2px 0 0; color: var(--accent); font-weight: 600; font-size: .95rem; }
+  .role span { white-space: nowrap; }
+  .bio { grid-column: 1 / -1; margin: 0; color: var(--muted); }
+  .links { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--bg);
+    color: var(--ink); text-decoration: none; font-size: .9rem;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn.primary { color: #10201c; } }
+
+  /* 篩選 */
+  .bar { display: flex; gap: 8px; margin: 28px 0 14px; flex-wrap: wrap; align-items: center; }
+  .bar h2 { margin: 0 auto 0 0; font-size: 1.1rem; }
+  .chip {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line);
+    background: transparent; color: var(--muted); font: inherit; font-size: .85rem; cursor: pointer;
+  }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* 作品卡片 */
+  .grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .card {
+    display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: start;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px; text-decoration: none; color: inherit;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card:active { transform: scale(.98); }
+  .icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: grid; place-items: center; font-size: 26px;
+    background: var(--accent-soft);
+  }
+  .card[data-cat="衛教資料"] .icon { background: var(--warm-soft); }
+  .card[data-cat="讀書心得"] .icon { background: var(--plum-soft); }
+  .card[data-cat="學習資源"] .icon { background: var(--blue-soft); }
+  .card h3 { margin: 0; font-size: 1rem; line-height: 1.4; }
+  .card p { margin: 4px 0 8px; color: var(--muted); font-size: .88rem; }
+  .tag {
+    display: inline-block; font-size: .75rem; padding: 2px 8px; border-radius: 6px;
+    background: var(--accent-soft); color: var(--accent); font-weight: 600;
+  }
+  .card[data-cat="衛教資料"] .tag { background: var(--warm-soft); color: var(--warm); }
+  .card[data-cat="讀書心得"] .tag { background: var(--plum-soft); color: var(--plum); }
+  .card[data-cat="學習資源"] .tag { background: var(--blue-soft); color: var(--blue); }
+  .empty { color: var(--muted); padding: 24px; text-align: center; border: 1px dashed var(--line); border-radius: var(--radius); grid-column: 1 / -1; }
+
+  /* 著作與推薦 */
+  .books {
+    margin-top: 16px; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 22px 10px;
+  }
+  .books h2 { margin: 0 0 10px; font-size: 1.1rem; }
+  .books h3 { margin: 14px 0 4px; font-size: .9rem; color: var(--muted); font-weight: 600; }
+  .books ul { list-style: none; margin: 0 0 6px; padding: 0; }
+  .books li + li { border-top: 1px solid var(--line); }
+  .book {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 0; color: var(--ink); text-decoration: none; font-size: .93rem;
+  }
+  a.book:hover { color: var(--accent); }
+  .go { color: var(--accent); flex-shrink: 0; }
+  .paper { line-height: 1.5; }
+  .paper small { display: block; margin-top: 4px; color: var(--muted); font-size: .8rem; }
+  .paper small b { color: var(--ink); }
+  .soon {
+    flex-shrink: 0; font-size: .75rem; padding: 2px 8px; border-radius: 6px;
+    background: var(--warm-soft); color: var(--warm); font-weight: 600;
+  }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 28px; }
+  .toast {
+    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
+    transform: translateX(-50%); background: var(--ink); color: var(--bg);
+    padding: 10px 16px; border-radius: 999px; font-size: .9rem;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ===== 名片區：把下面的文字換成你自己的 ===== -->
+  <section class="profile">
+    <!-- 頭像：把照片放在同資料夾並命名為 avatar.jpg；沒有照片時顯示「林」 -->
+    <div class="avatar"><img src="avatar.jpg" alt="林俊言的照片" onerror="this.replaceWith('林')"></div>
+    <div>
+      <h1>林俊言</h1>
+      <p class="role"><span>中西醫師</span>・<span>二寶爸</span>・<span>譯者</span>・<span>意識探索家</span></p>
+    </div>
+    <p class="bio">中醫系雙主修醫學系，曾在中醫診所執業、取得針灸研究所碩士；譯有《肌筋膜疼痛與機能障礙：激痛點手冊》等三本醫學書。長期進修心理諮商。現在用 AI 把教養心得和醫療知識做成孩子玩得下去、病人看得懂的網頁工具。</p>
+    <div class="links">
+      <button class="btn" id="share">分享這張名片</button>
+      <a class="btn" href="mailto:ccc99188@gmail.com">✉️ Email</a>
+    </div>
+  </section>
+
+  <!-- ===== 著作與推薦 ===== -->
+  <section class="books">
+    <h2>著作與推薦</h2>
+
+    <h3>📘 譯作</h3>
+    <ul>
+      <li><span class="book">肌筋膜疼痛與機能障礙：激痛點手冊</span></li>
+      <li><span class="book">神經療法教科書及圖解：以局部麻醉劑診斷及治療</span></li>
+      <li><span class="book">奇經八脈與心理情緒的痛苦</span></li>
+    </ul>
+
+    <h3>📄 期刊論文</h3>
+    <ul>
+      <li><a class="book paper" href="https://onlinelibrary.wiley.com/doi/full/10.1155/2022/5951327">
+        <span>
+          Efficacy of Fu’s Subcutaneous Needling on Myofascial Trigger Points for Lateral Epicondylalgia: A Randomized Control Trial
+          <small>Huang CH, <b>Lin CY</b>, Sun MF, Fu Z, Chou LW.<br><i>Evidence-Based Complementary and Alternative Medicine</i>, 2022</small>
+        </span>
+        <span class="go">→</span>
+      </a></li>
+    </ul>
+
+    <h3>✍️ 推薦序｜心靈工坊</h3>
+    <ul>
+      <li><a class="book" href="preface-beyond-mindfulness.html">超越正念：當下立斷的覺知練習<span class="go">全文 →</span></a></li>
+      <li><a class="book" href="preface-blooming.html">當下，繁花盛開（30 週年全新增訂版）<span class="go">全文 →</span></a></li>
+      <li><a class="book" href="preface-adversity-joy.html">轉逆境為喜悅（全新修訂版）<span class="go">全文 →</span></a></li>
+      <li><span class="book">停止追求幸福（暫名）<span class="soon">即將出版</span></span></li>
+    </ul>
+  </section>
+
+  <div class="bar">
+    <h2>作品</h2>
+    <div id="filters"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <footer>頭像插圖：原作者 楊子新・AI 輔助改圖 林俊言<br>以 Claude 協助製作</footer>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== 作品清單：新增作品就在這裡加一筆 =====
+  const projects = [
+    {
+      title: "我的探索星球",
+      desc: "陪 9–12 歲孩子探索興趣、能力、感受與選擇，對應 SEL 五大能力。",
+      icon: "🌍",
+      cat: "孩子遊戲",
+      url: "https://ccc99188-oss.github.io/exploration-planet/"
+    },
+    {
+      title: "小一的廚房遊戲",
+      desc: "給小廚師的廚房小遊戲。",
+      icon: "🐣",
+      cat: "孩子遊戲",
+      url: "https://ccc99188-oss.github.io/egg-kitchen/"
+    },
+    {
+      title: "小四的廚房遊戲",
+      desc: "闖關學做菜：從早餐、採買到一日三餐，家長蓋章才算過關。",
+      icon: "🏴‍☠️",
+      cat: "孩子遊戲",
+      url: "https://ccc99188-oss.github.io/kitchen-quest/"
+    },
+    {
+      title: "培養心理強大的孩子",
+      desc: "130 項教養提醒卡片，整理自《Raising Mentally Strong Kids》。",
+      icon: "🌱",
+      cat: "讀書心得",
+      url: "https://ccc99188-oss.github.io/mentally-strong-kids/"
+    },
+    {
+      title: "台中榮總精神科急性病房輔助學習平台",
+      desc: "給精神科急性病房學員的教學平台，以虛構病人資料練習臨床思考。",
+      icon: "🏥",
+      cat: "學習資源",
+      url: "https://ccc99188-oss.github.io/pmh-ffa8g8j7cye9/"
+    },
+    {
+      title: "[精神科] 認識善思達長效針",
+      desc: "給病人的長效針衛教：打針流程、副作用、常見問題與下次打針日期。",
+      icon: "💉",
+      cat: "衛教資料",
+      url: "https://ccc99188-oss.github.io/invega-sustenna-edu/"
+    }
+  ];
+
+  const grid = document.getElementById("grid");
+  const filters = document.getElementById("filters");
+  // 分類順序：要新增分類就加在這裡
+  const cats = ["全部", "讀書心得", "衛教資料", "學習資源", "孩子遊戲"];
+  let current = "全部";
+
+  function render() {
+    grid.innerHTML = "";
+    const list = projects
+      .filter(p => current === "全部" || p.cat === current)
+      .sort((a, b) => cats.indexOf(a.cat) - cats.indexOf(b.cat));
+    if (!list.length) {
+      grid.innerHTML = '<div class="empty">這個分類的作品準備中 ✨</div>';
+      return;
+    }
+    list.forEach(p => {
+        const a = document.createElement("a");
+        a.className = "card";
+        a.href = p.url;
+        a.dataset.cat = p.cat;
+        a.innerHTML = `
+          <div class="icon" aria-hidden="true">${p.icon}</div>
+          <div>
+            <h3></h3><p></p><span class="tag"></span>
+          </div>`;
+        a.querySelector("h3").textContent = p.title;
+        a.querySelector("p").textContent = p.desc;
+        a.querySelector(".tag").textContent = p.cat;
+        grid.appendChild(a);
+      });
+  }
+
+  cats.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.textContent = c;
+    b.setAttribute("aria-pressed", c === current);
+    b.onclick = () => {
+      current = c;
+      filters.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+      render();
+    };
+    filters.appendChild(b);
+  });
+  render();
+
+
+  const toast = document.getElementById("toast");
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 1800);
+  }
+
+  document.getElementById("share").onclick = async () => {
+    const data = { title: document.title, url: location.href };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (e) {}
+    } else {
+      await navigator.clipboard.writeText(location.href);
+      showToast("已複製網址");
+    }
+  };
+</script>
+</body>
+</html>
